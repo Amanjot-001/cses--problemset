@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Path to the compiled solution executable
-solution_executable="./binary-search/array-division"
+solution_executable="./graphs/Building_Roads"
 
 # Directory containing the test cases
-test_dir="./test-cases/array-division"
+test_dir="./test-cases/tests"
 
 for input_file in ${test_dir}/*.in; do
     # Determine the corresponding output file
@@ -19,10 +19,10 @@ for input_file in ${test_dir}/*.in; do
     else
         echo "Test case ${input_file} failed."
 		# cat ${input_file}
-        echo "Expected output:"
-        cat ${output_file}
-        echo "Your output:"
-        cat temp_output.txt
+        # echo "Expected output:"
+        # cat ${output_file}
+        # echo "Your output:"
+        # cat temp_output.txt
     fi
 done
 
