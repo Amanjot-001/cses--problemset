@@ -6,43 +6,59 @@ class Pair {
 public:
 	int i;
 	int j;
-	string psf;
 
-	Pair(int i, int j, string psf) {
+	Pair(int i, int j) {
 		this->i=i;
 		this->j=j;
-		this->psf=psf;
 	}
 };
 
 int n, m;
-vector<vector<bool>> vis;	
+vector<vector<bool>> vis;
 vector<vector<char>> arr;
-Pair start(0, 0, "");
-Pair dest(0, 0, "");
+Pair start(0, 0);
+Pair dest(0, 0);
+
+vector<vector<pair<int, int>>> parent;
 
 string bfs(vector<vector<char>> &arr, vector<vector<bool>> &vis) {
-	vector<tuple<int, int, char>> dir = {{0, 1, 'R'}, {1, 0, 'D'}, {0, -1, 'L'}, {-1, 0, 'U'}};
+	vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
 	queue<Pair> q;
 	q.push(start);
 	vis[start.i][start.j]=true;
+	parent[start.i][start.j] = {-1, -1};
 
 	while(!q.empty()) {
 		Pair rem = q.front();
 		q.pop();
 
-		if (rem.i == dest.i && rem.j == dest.j)
-            return rem.psf;
+		if (rem.i == dest.i && rem.j == dest.j) {
+			string path;
+			Pair p = dest;
+
+			while (parent[p.i][p.j].first != -1 && parent[p.i][p.j].second != -1) {
+                int pi = parent[p.i][p.j].first;
+                int pj = parent[p.i][p.j].second;
+                if (pi == p.i) {
+                    path += (pj < p.j) ? 'R' : 'L';
+                } else {
+                    path += (pi < p.i) ? 'D' : 'U';
+                }
+                p = Pair(pi, pj);
+            }
+            reverse(path.begin(), path.end());
+            return path;
+		}
 
         for (auto i=0; i<dir.size(); i++) {
-            int rdash = rem.i + get<0>(dir[i]);
-            int cdash = rem.j + get<1>(dir[i]);
-            char move = get<2>(dir[i]);
+            int rdash = rem.i + dir[i].first;
+            int cdash = rem.j + dir[i].second;
             
             if (rdash >= 0 && rdash < n && cdash>= 0 && cdash < m && !vis[rdash][cdash] && arr[rdash][cdash] == '.') {
-                q.push(Pair(rdash, cdash, rem.psf + move));
+                q.push(Pair(rdash, cdash));
                 vis[rdash][cdash] = true;
+				parent[rdash][cdash] = {rem.i, rem.j};
             }
         }
 	}
@@ -55,6 +71,7 @@ signed main() {
 	cin >> n >> m;
 	arr.resize(n, vector<char> (m));
 	vis.resize(n, vector<bool> (m, false));
+	parent.resize(n, vector<pair<int, int>>(m, {-1, -1}));
 
 	for(int i=0; i<n; i++) {
 		string s;
@@ -62,11 +79,11 @@ signed main() {
 		for(int j=0; j<m; j++) {
 			char ch = s[j];
 			if(ch == 'A') {
-				start = Pair(i, j, "");
+				start = Pair(i, j);
 				arr[i][j] = '.';
 			}
 			else if(ch == 'B') {
-				dest = Pair(i, j, "");
+				dest = Pair(i, j);
 				arr[i][j] = '.';
 			}
 			else {
