@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Path to the compiled solution executable
-solution_executable="./graphs/Building_Roads"
+solution_executable="./graphs/a.out"
 
 # Directory containing the test cases
-test_dir="./test-cases/tests"
+test_dir="./test-cases/high"
 
 for input_file in ${test_dir}/*.in; do
     # Determine the corresponding output file
