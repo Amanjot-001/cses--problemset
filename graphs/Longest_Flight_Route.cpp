@@ -80,28 +80,27 @@ signed main() {
 			}
 		}
 	}
-
-	if(dist[n-1] == INT_MIN) {
-		cout << "IMPOSSIBLE" << '\n';
-	} else {
-		vector<int> path;
-		for(int i=n-1; i != -1; i = par[i]) {
-			path.push_back(i);
-			if(i == 0)
-				break;
+	
+	vector<int> path;
+	bool contains_1 = false;
+	for(int i=n-1; i != -1; i = par[i]) {
+		path.push_back(i);
+		if(i == 0) {
+			contains_1 = true;
+			break;
 		}
-
-		if(find(path.begin(), path.end(), 0) == path.end()) {
-			cout << "IMPOSSIBLE" << '\n';
-			exit(0);
-		}
-
-		cout << dist[n-1]+1 << '\n';
-		for(int i=path.size()-1; i>=0; i--) {
-			cout << path[i]+1 << " ";
-		}
-		cout << '\n';
 	}
+
+	if(!contains_1) {
+		cout << "IMPOSSIBLE" << '\n';
+		exit(0);
+	}
+
+	cout << dist[n-1]+1 << '\n';
+	for(int i=path.size()-1; i>=0; i--) {
+		cout << path[i]+1 << " ";
+	}
+	cout << '\n';
 
 	return 0;
 }
