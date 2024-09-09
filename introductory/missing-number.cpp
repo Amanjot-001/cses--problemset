@@ -4,20 +4,16 @@ using namespace std;
 
 int32_t main() {
 	ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
-	int n;
+	ll n;
 	cin >> n;
-	vector<int> v(n-1);
-	for(int i=0; i<n-1; i++)
-		cin >> v[i];
-	
-	sort(v.begin(), v.end());
-	for(int i=0; i<n-1; i++) {
-		if(v[i] != i+1) {
-			cout << i+1 << '\n';
-			return 0;
-		}
+	ll sum=0;
+
+	for(int i=1; i<n; i++) {
+		int a;
+		cin >> a;
+		sum += a;
 	}
 
-	cout << n << '\n';
+	cout << n*(n+1)/2 - sum << '\n'; 
 	return 0;
 }
